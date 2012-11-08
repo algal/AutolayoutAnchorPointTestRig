@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Foxtrot Studios. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
 
 #import "InstrumentedView.h"
@@ -95,7 +96,9 @@ void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName) {
   
   
   // enable instrumentation
-//  [greybox showBorder];
+  [greybox showBorder];
+  greybox.layer.anchorPoint = CGPointMake(0.75, greybox.layer.anchorPoint.y);
+
   [greybox addCrossHairsToAnchorPoint];
 
 //  [greybox addCrossHairs:[greybox convertPoint:greybox.center fromView:greybox.superview]];

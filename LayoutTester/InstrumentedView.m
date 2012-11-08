@@ -11,7 +11,7 @@
 
 void AddBorderToLayerOfView(UIView * view) {
   CALayer * layer = view.layer;
-  layer.borderColor = [[UIColor redColor] CGColor];
+  layer.borderColor = [[UIColor blueColor] CGColor];
   layer.borderWidth = 2.0f;
 }
 
@@ -56,7 +56,7 @@ void AddSpotToAnchorPointOfView(UIView * view) {
   CALayer * layer = view.layer;
   CGSize layerSize = layer.bounds.size;
   CGPoint anchorPointInLayerCoords = CGPointMake(layer.anchorPoint.x * layerSize.width,
-                                                 layer.anchorPoint.x * layerSize.height);
+                                                 layer.anchorPoint.y * layerSize.height);
 
   CGPoint anchorPointInViewCoords = anchorPointInLayerCoords;
   AddCrossHairsToView(view, anchorPointInViewCoords);
