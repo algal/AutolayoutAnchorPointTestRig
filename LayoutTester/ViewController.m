@@ -95,9 +95,13 @@ void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName) {
   
   
   // enable instrumentation
-  [greybox showBorder];
-//  [greybox addSpot];
-  [greybox addCrossHairs:[greybox convertPoint:greybox.center fromView:greybox.superview]];
+//  [greybox showBorder];
+  [greybox addCrossHairsToAnchorPoint];
+
+//  [greybox addCrossHairs:[greybox convertPoint:greybox.center fromView:greybox.superview]];
+
+//  [greybox addCrossHairs:CGPointMake(10, 30)];
+  
 
 }
 
