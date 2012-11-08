@@ -17,11 +17,11 @@ void AddBorderToLayerOfView(UIView * view) {
 
 /**
  @param point bullseye of crosshairs, in view's coordinates
+ @return the sublayer with the crosshairs image
  */
-void AddCrossHairsToView(UIView * view, CGPoint point) {
+CALayer * AddCrossHairsSublayerToView(UIView * view, CGPoint point) {
   UIColor * const color = [UIColor redColor];
   CGFloat const crossHairDimension = 7.0f;
-  
   
   CALayer * layer = view.layer;
   
@@ -43,24 +43,22 @@ void AddCrossHairsToView(UIView * view, CGPoint point) {
   UIImage * overlayImage = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   
-  
-  // add it to a spotlayer
+  // add crosshairs image to a sublayer
   CALayer * spotLayer = [CALayer layer];
   spotLayer.frame = layer.bounds;
   spotLayer.contents = (id)[overlayImage CGImage];
   [layer addSublayer:spotLayer];
-
+  return spotLayer;
 }
 
-void AddSpotToAnchorPointOfView(UIView * view) {
+CALayer * AddCrosshairsSublayerToAnchorPointOfView(UIView * view) {
   CALayer * layer = view.layer;
   CGSize layerSize = layer.bounds.size;
   CGPoint anchorPointInLayerCoords = CGPointMake(layer.anchorPoint.x * layerSize.width,
                                                  layer.anchorPoint.y * layerSize.height);
 
   CGPoint anchorPointInViewCoords = anchorPointInLayerCoords;
-  AddCrossHairsToView(view, anchorPointInViewCoords);
-  return;
+  return AddCrossHairsSublayerToView(view, anchorPointInViewCoords);
 }
 
 @implementation InstrumentedView
@@ -90,11 +88,11 @@ void AddSpotToAnchorPointOfView(UIView * view) {
 
 -(void)addCrossHairsToAnchorPoint
 {
-  AddSpotToAnchorPointOfView(self);
+  AddCrosshairsSublayerToAnchorPointOfView(self);
 }
 
 -(void)addCrossHairs:(CGPoint)point
 {
-  AddCrossHairsToView(self, point);
+  AddCrossHairsSublayerToView(self, point);
 }
 @end
