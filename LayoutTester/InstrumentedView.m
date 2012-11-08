@@ -15,6 +15,43 @@ void AddBorderToLayerOfView(UIView * view) {
   layer.borderWidth = 2.0f;
 }
 
+/**
+ @param point center of crosshairs, in view's coordinates
+ */
+void AddCrossHairsToView(UIView * view, CGPoint point) {
+  UIColor * const color = [UIColor redColor];
+  CGFloat const crossHairDimension = 7.0f;
+  
+  
+  CALayer * layer = view.layer;
+  
+  // draw a cross-hairs centered on the anchorpoint
+  CGSize layerSize = layer.bounds.size;
+  CGPoint thePoint = point;
+  
+  UIGraphicsBeginImageContextWithOptions(layerSize, NO, 0);
+  CGContextRef c = UIGraphicsGetCurrentContext();
+  CGContextSetStrokeColorWithColor(c, [color CGColor]);
+  
+  CGContextMoveToPoint(c, thePoint.x - (crossHairDimension/2.0f), thePoint.y);
+  CGContextAddLineToPoint(c, thePoint.x + (crossHairDimension/2.0f), thePoint.y);
+  CGContextStrokePath(c);
+  CGContextMoveToPoint(c,    thePoint.x,  thePoint.y - (crossHairDimension/2.0f));
+  CGContextAddLineToPoint(c, thePoint.x , thePoint.y + (crossHairDimension/2.0f));
+  CGContextStrokePath(c);
+  
+  UIImage * overlayImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  
+  
+  // add it to a spotlayer
+  CALayer * spotLayer = [CALayer layer];
+  spotLayer.frame = layer.bounds;
+  spotLayer.contents = (id)[overlayImage CGImage];
+  [layer addSublayer:spotLayer];
+
+}
+
 void AddSpotToAnchorPointOfView(UIView * view) {
   UIColor * const color = [UIColor redColor];
   CGFloat const crossHairDimension = 7.0f;
@@ -47,8 +84,6 @@ void AddSpotToAnchorPointOfView(UIView * view) {
   spotLayer.frame = layer.bounds;
   spotLayer.contents = (id)[overlayImage CGImage];
   [layer addSublayer:spotLayer];
-
-
 }
 
 @implementation InstrumentedView
@@ -79,5 +114,10 @@ void AddSpotToAnchorPointOfView(UIView * view) {
 -(void)addSpot
 {
   AddSpotToAnchorPointOfView(self);
+}
+
+-(void)addCrossHairs:(CGPoint)point
+{
+  AddCrossHairsToView(self, point);
 }
 @end

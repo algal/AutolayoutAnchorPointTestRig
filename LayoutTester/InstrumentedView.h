@@ -11,5 +11,5 @@
 @interface InstrumentedView : UIView
 -(void)showBorder;
 -(void)addSpot;
-
+-(void)addCrossHairs:(CGPoint)point;
 @end
