@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 
+#import "InstrumentedView.h"
+
 #ifdef DEBUG
 @interface UIView (debug)
 - (NSString *)recursiveDescription;
@@ -53,11 +55,12 @@ NSString * NSStringFromUIViewAutoResizing(UIViewAutoresizing autoResizingMask) {
   return result;
 }
 
-void LogLayoutPropertiesOfUIView(UIView *rootView,NSString * viewName) {
-  NSLog(@"%@=%@",viewName,rootView);
-  NSLog(@"%@.translatesAutoresizingMaskIntoConstraints=%@",viewName,NSStringFromBOOL(rootView.translatesAutoresizingMaskIntoConstraints));
-  NSLog(@"%@.autoresizingMask=%@",viewName,NSStringFromUIViewAutoResizing(rootView.autoresizingMask));
-  NSLog(@"%@.constraints=%@",viewName,rootView.constraints);
+void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName) {
+  NSLog(@"%@=%@",viewName,view);
+  NSLog(@"%@.translatesAutoresizingMaskIntoConstraints=%@",viewName,NSStringFromBOOL(view.translatesAutoresizingMaskIntoConstraints));
+  NSLog(@"%@.autoresizingMask=%@",viewName,NSStringFromUIViewAutoResizing(view.autoresizingMask));
+  NSLog(@"%@.constraints=%@",viewName,view.constraints);
+  NSLog(@"%@.hasAmbiguousLayout=%@",viewName,NSStringFromBOOL(view.hasAmbiguousLayout));
 }
 
 
@@ -67,17 +70,14 @@ void LogLayoutPropertiesOfUIView(UIView *rootView,NSString * viewName) {
 {
   [super viewDidLoad];
   UIView * rootView = self.view;
-  UIView * greybox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+  InstrumentedView * greybox = [[InstrumentedView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
   greybox.backgroundColor = [UIColor lightGrayColor];
 
   // stop autolayout from translating the default (all fixed) autoresizingmask into constraints
   greybox.translatesAutoresizingMaskIntoConstraints =NO;
  
- 
   [rootView addSubview:greybox];
 
-  LogLayoutPropertiesOfUIView(rootView, @"rootView");
-  LogLayoutPropertiesOfUIView(greybox, @"greybox");
 
   [rootView addConstraints:
    [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-100-[greybox(100)]"
@@ -89,17 +89,25 @@ void LogLayoutPropertiesOfUIView(UIView *rootView,NSString * viewName) {
                                            options:0
                                            metrics:nil
                                              views:NSDictionaryOfVariableBindings(greybox)]];
-}
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  LogLayoutPropertiesOfUIView(rootView, @"rootView");
+  LogLayoutPropertiesOfUIView(greybox, @"greybox");
+  
+  
+  // enable instrumentation
+  [greybox showBorder];
+  [greybox addSpot];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
   UIView * rootView = self.view;
+  UIView * greybox = [[self.view subviews] lastObject];
   NSLog(@"rootView.recursiveDescription=\n%@",[rootView recursiveDescription]);
+  
+  NSLog(@"greybox.verticalconstraints=%@",[greybox constraintsAffectingLayoutForAxis:UILayoutConstraintAxisVertical]);
+  LogLayoutPropertiesOfUIView(rootView, @"rootView");
+  LogLayoutPropertiesOfUIView(greybox, @"greybox");
+
 }
 @end
