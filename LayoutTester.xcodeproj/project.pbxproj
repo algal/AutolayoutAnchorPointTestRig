@@ -20,6 +20,7 @@
 		5E06D26A164BADB600BD808B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E06D269164BADB600BD808B /* ViewController.m */; };
 		5E06D272164BBD6900BD808B /* InstrumentedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E06D271164BBD6900BD808B /* InstrumentedView.m */; };
 		5E06D279164BC8ED00BD808B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E06D278164BC8ED00BD808B /* QuartzCore.framework */; };
+		5E657DDC164D992800998F89 /* LayoutUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E657DDB164D992800998F89 /* LayoutUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,8 @@
 		5E06D270164BBD6900BD808B /* InstrumentedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstrumentedView.h; sourceTree = "<group>"; };
 		5E06D271164BBD6900BD808B /* InstrumentedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstrumentedView.m; sourceTree = "<group>"; };
 		5E06D278164BC8ED00BD808B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		5E657DDA164D992800998F89 /* LayoutUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutUtils.h; sourceTree = "<group>"; };
+		5E657DDB164D992800998F89 /* LayoutUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LayoutUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,9 +98,11 @@
 				5E06D265164BADB600BD808B /* MainStoryboard.storyboard */,
 				5E06D268164BADB600BD808B /* ViewController.h */,
 				5E06D269164BADB600BD808B /* ViewController.m */,
-				5E06D254164BADB600BD808B /* Supporting Files */,
 				5E06D270164BBD6900BD808B /* InstrumentedView.h */,
 				5E06D271164BBD6900BD808B /* InstrumentedView.m */,
+				5E06D254164BADB600BD808B /* Supporting Files */,
+				5E657DDA164D992800998F89 /* LayoutUtils.h */,
+				5E657DDB164D992800998F89 /* LayoutUtils.m */,
 			);
 			path = LayoutTester;
 			sourceTree = "<group>";
@@ -186,6 +191,7 @@
 				5E06D25E164BADB600BD808B /* AppDelegate.m in Sources */,
 				5E06D26A164BADB600BD808B /* ViewController.m in Sources */,
 				5E06D272164BBD6900BD808B /* InstrumentedView.m in Sources */,
+				5E657DDC164D992800998F89 /* LayoutUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +310,7 @@
 				5E06D26F164BADB600BD808B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

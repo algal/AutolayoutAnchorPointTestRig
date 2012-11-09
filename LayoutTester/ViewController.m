@@ -9,6 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ViewController.h"
 
+#import "LayoutUtils.h"
 #import "InstrumentedView.h"
 
 #ifdef DEBUG
@@ -64,6 +65,13 @@ void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName) {
   NSLog(@"%@.hasAmbiguousLayout=%@",viewName,NSStringFromBOOL(view.hasAmbiguousLayout));
 }
 
+void LogPoint(CGPoint point, NSString * pointName) {
+  NSLog(@"%@=%@",pointName,NSStringFromCGPoint(point));
+}
+
+CGPoint CGPointGetCenter(CGRect rect) {
+  return CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
+}
 
 @implementation ViewController
 
@@ -79,7 +87,6 @@ void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName) {
  
   [rootView addSubview:greybox];
 
-
   [rootView addConstraints:
    [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-100-[greybox(100)]"
                                            options:0
@@ -91,32 +98,24 @@ void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName) {
                                            metrics:nil
                                              views:NSDictionaryOfVariableBindings(greybox)]];
 
-  LogLayoutPropertiesOfUIView(rootView, @"rootView");
-  LogLayoutPropertiesOfUIView(greybox, @"greybox");
-  
+//  LogLayoutPropertiesOfUIView(rootView, @"rootView");
+//  LogLayoutPropertiesOfUIView(greybox, @"greybox");
   
   // enable instrumentation
   [greybox showBorder];
-  greybox.layer.anchorPoint = CGPointMake(0.75, greybox.layer.anchorPoint.y);
+//  greybox.layer.anchorPoint = CGPointMake(0.75, greybox.layer.anchorPoint.y);
 
-  [greybox addCrossHairsToAnchorPoint];
-
-//  [greybox addCrossHairs:[greybox convertPoint:greybox.center fromView:greybox.superview]];
-
-//  [greybox addCrossHairs:CGPointMake(10, 30)];
-  
-
+//  [greybox addCrossHairsToAnchorPoint];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
   UIView * rootView = self.view;
   UIView * greybox = [[self.view subviews] lastObject];
-  NSLog(@"rootView.recursiveDescription=\n%@",[rootView recursiveDescription]);
-  
-  NSLog(@"greybox.verticalconstraints=%@",[greybox constraintsAffectingLayoutForAxis:UILayoutConstraintAxisVertical]);
-  LogLayoutPropertiesOfUIView(rootView, @"rootView");
-  LogLayoutPropertiesOfUIView(greybox, @"greybox");
 
+//  LogLayoutPropertiesOfUIView(rootView, @"rootView");
+//  LogLayoutPropertiesOfUIView(greybox, @"greybox");
+
+  AddCrossHairsSublayerToView(rootView, AnchorPointInSuperViewCoords(greybox));
 }
 @end

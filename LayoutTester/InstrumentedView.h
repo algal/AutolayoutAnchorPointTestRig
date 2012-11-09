@@ -10,6 +10,6 @@
 
 @interface InstrumentedView : UIView
 -(void)showBorder;
--(void)addCrossHairsToAnchorPoint;
--(void)addCrossHairs:(CGPoint)point;
+-(CALayer*)addCrossHairsToAnchorPoint;
+-(CALayer*)addCrossHairs:(CGPoint)point;
 @end
