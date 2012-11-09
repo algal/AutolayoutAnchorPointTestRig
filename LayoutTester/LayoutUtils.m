@@ -10,6 +10,31 @@
 
 #import "LayoutUtils.h"
 
+/**
+  Sets the anchorPoint of view, without moving it.
+ 
+ This no longer works in the presence of autolayout.
+ */
+void SetViewAnchorPointMotionlessly(UIView * view, CGPoint anchorPoint )
+{
+  CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y);
+  CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y);
+  
+  newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
+  oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
+  
+  CGPoint position = view.layer.position;
+  
+  position.x -= oldPoint.x;
+  position.x += newPoint.x;
+  
+  position.y -= oldPoint.y;
+  position.y += newPoint.y;
+  
+  view.layer.position = position;
+  view.layer.anchorPoint = anchorPoint;
+}
+
 void AddBorderToLayerOfView(UIView * view) {
   CALayer * layer = view.layer;
   layer.borderColor = [[UIColor blueColor] CGColor];

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+void SetViewAnchorPointMotionlessly(UIView * view, CGPoint anchorPoint);
+
 void AddBorderToLayerOfView(UIView * view);
 
 /**
