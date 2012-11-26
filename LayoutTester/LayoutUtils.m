@@ -13,26 +13,33 @@
 /**
   Sets the anchorPoint of view, without moving it.
  
+ @param anchorPoint point in view's own unit coords (i.e., x in [0,1])
+ 
  This no longer works in the presence of autolayout.
  */
 void SetViewAnchorPointMotionlessly(UIView * view, CGPoint anchorPoint )
 {
-  CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x, view.bounds.size.height * anchorPoint.y);
-  CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x, view.bounds.size.height * view.layer.anchorPoint.y);
+  // asset: old and new anchorPoint are in view's unit coords
+  CGPoint const oldAnchorPoint = view.layer.anchorPoint;
+  CGPoint const newAnchorPoint = anchorPoint;
   
+  // transform old and new anchorPoints into view's absolute coords
+  CGPoint newPoint = CGPointMake(view.bounds.size.width * newAnchorPoint.x, view.bounds.size.height * newAnchorPoint.y);
+  CGPoint oldPoint = CGPointMake(view.bounds.size.width * oldAnchorPoint.x, view.bounds.size.height * oldAnchorPoint.y);
+  
+  // transorm old and new anchorPoint into superview's coords
   newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
   oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
   
-  CGPoint position = view.layer.position;
-  
-  position.x -= oldPoint.x;
-  position.x += newPoint.x;
-  
-  position.y -= oldPoint.y;
-  position.y += newPoint.y;
-  
-  view.layer.position = position;
-  view.layer.anchorPoint = anchorPoint;
+  // get the old position (in superview coords)
+  CGPoint const oldPosition = view.layer.position;
+
+  // calculate a newPosition, from the delta in the anchorPoint
+  CGPoint const newPosition = CGPointApplyAffineTransform(oldPosition,
+                                                          CGAffineTransformMakeTranslation((newPoint.x - oldPoint.x),
+                                                                                           (newPoint.y - oldPoint.y)));
+  view.layer.position = newPosition;
+  view.layer.anchorPoint = newAnchorPoint;
 }
 
 void AddBorderToLayerOfView(UIView * view) {
