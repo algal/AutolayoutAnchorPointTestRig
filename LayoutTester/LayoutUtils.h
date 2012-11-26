@@ -13,6 +13,11 @@ CGPoint GetAnchorPointInSuperViewCoords(UIView *view);
 
 void SetViewAnchorPointMotionlessly(UIView * view, CGPoint anchorPoint);
 
+void SetViewAnchorPointMotionlesslyUpdatingConstraints(UIView * view,CGPoint anchorPoint,
+                                                       NSLayoutConstraint * xConstraint,
+                                                       NSLayoutConstraint * yConstraint);
+
+
 void AddBorderToLayerOfView(UIView * view);
 CALayer * AddRectLayerToView(UIView * view, CGRect rect);
 

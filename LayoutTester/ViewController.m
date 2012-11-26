@@ -104,26 +104,32 @@ CGPoint CGPointGetCenter(CGRect rect) {
   greybox.autoresizingMask = UIViewAutoresizingNone;
 #ifdef USING_AUTOLAYOUT
   greybox.translatesAutoresizingMaskIntoConstraints = NO;
-  [rootView addConstraints:
-   [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-100-[greybox(100)]"
-                                           options:0
-                                           metrics:nil
-                                             views:NSDictionaryOfVariableBindings(greybox)]];
-  [rootView addConstraints:
-   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-100-[greybox(100)]"
-                                           options:0
-                                           metrics:nil
-                                             views:NSDictionaryOfVariableBindings(greybox)]];
+  NSArray * xConstraints =[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-100-[greybox(100)]"
+                                                                           options:0
+                                                                           metrics:nil
+                                                                             views:NSDictionaryOfVariableBindings(greybox)];
+  NSArray * yConstraints =[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-100-[greybox(100)]"
+                                                                  options:0
+                                                                  metrics:nil
+                                                                    views:NSDictionaryOfVariableBindings(greybox)];
+  [rootView addConstraints:xConstraints];
+  [rootView addConstraints:yConstraints];
 #endif
-  CGFloat fortyfivedegreesright = (M_PI * 2.0f) - (M_PI * 2.0f) / 8.f;
-  NSLog(@"fortyfivedegreesright=%f",fortyfivedegreesright);
-  greybox.transform = CGAffineTransformMakeRotation( 0.3 );
   
   LogLayoutPropertiesOfUIView(rootView, @"rootView");
   LogLayoutPropertiesOfUIView(greybox, @"greybox");
   
+  // have not handled transforms correctly yet
+  //  greybox.transform = CGAffineTransformMakeRotation( 0.3 );
+//  greybox.transform = CGAffineTransformMakeScale(1.5, 1.0);
+
+#ifdef USING_AUTOLAYOUT
+  SetViewAnchorPointMotionlesslyUpdatingConstraints(greybox, CGPointMake(1.0, 0.5),
+                                                    xConstraints[0],yConstraints[0]);
+#else
   SetViewAnchorPointMotionlessly(greybox, CGPointMake(1.0, 0.5));
-  
+#endif
+
   // enable instrumentation
   [greybox showBorder];
 

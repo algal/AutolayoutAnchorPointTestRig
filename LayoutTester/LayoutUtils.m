@@ -36,27 +36,92 @@ CGPoint GetAnchorPointInSuperViewCoords(UIView *view)
  */
 void SetViewAnchorPointMotionlessly(UIView * view, CGPoint anchorPoint )
 {
-  // asset: old and new anchorPoint are in view's unit coords
+  // assert: old and new anchorPoint are in view's unit coords
   CGPoint const oldAnchorPoint = view.layer.anchorPoint;
   CGPoint const newAnchorPoint = anchorPoint;
   
-  // transform old and new anchorPoints into view's absolute coords
-  CGPoint newPoint = CGPointMake(view.bounds.size.width * newAnchorPoint.x, view.bounds.size.height * newAnchorPoint.y);
-  CGPoint oldPoint = CGPointMake(view.bounds.size.width * oldAnchorPoint.x, view.bounds.size.height * oldAnchorPoint.y);
+  // Calculate anchorPoints in view's absolute coords
+  CGPoint oldPoint = CGPointMake(view.bounds.size.width * oldAnchorPoint.x,
+                                 view.bounds.size.height * oldAnchorPoint.y);
+  CGPoint newPoint = CGPointMake(view.bounds.size.width * newAnchorPoint.x,
+                                 view.bounds.size.height * newAnchorPoint.y);
   
-  // transorm old and new anchorPoint into superview's coords
-  newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
+  // Calculate the transformed anchorPoints, so the vector between them
+  // represents the displacement as seen from the superview
   oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
+  newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
+  
+  // Calculate the delta between the anchorPoints
+  CGPoint const delta = CGPointMake(newPoint.x-oldPoint.x, newPoint.y-oldPoint.y);
   
   // get the old position (in superview coords)
   CGPoint const oldPosition = view.layer.position;
 
-  // calculate a newPosition, from the delta in the anchorPoint
+  // calculate a newPosition, from the delta in the anchorPoint.
+  // this newPosition will compensate for the effect of the change in anchorPoint
   CGPoint const newPosition = CGPointApplyAffineTransform(oldPosition,
-                                                          CGAffineTransformMakeTranslation((newPoint.x - oldPoint.x),
-                                                                                           (newPoint.y - oldPoint.y)));
+                                                          CGAffineTransformMakeTranslation(delta.x,
+                                                                                           delta.y));
   view.layer.position = newPosition;
   view.layer.anchorPoint = newAnchorPoint;
+}
+
+/**
+  Set the anchorPoint of view without changing is perceived position.
+ 
+ @param view view whose anchorPoint we will mutate
+ @param anchorPoint new anchorPoint of the view in unit coords (e.g., {0.5,1.0})
+ @param xConstraint an NSLayoutConstraint whose constant property adjust's view x.center
+ @param yConstraint an NSLayoutConstraint whose constant property adjust's view y.center
+
+ As multiple constraints can contribute to determining a view's center, the user of this
+ function must specify which constraint they want modified in order to compensate for the
+ modification in anchorPoint.
+ 
+ TODO: make this work with transformed views as well. The problem is that trasnforms
+ change view.frame, and layouts constraints effectively act on view.frame, so 
+ we've got to update not only layout constraints that determine view.layer.position (equivalently,
+ view.center) but also those layout constraints that determine width and height.
+ 
+ */
+void SetViewAnchorPointMotionlesslyUpdatingConstraints(UIView * view,CGPoint anchorPoint,
+                                                       NSLayoutConstraint * xConstraint,
+                                                       NSLayoutConstraint * yConstraint)
+{
+  // assert: old and new anchorPoint are in view's unit coords
+  CGPoint const oldAnchorPoint = view.layer.anchorPoint;
+  CGPoint const newAnchorPoint = anchorPoint;
+  
+  // Calculate anchorPoints in view's absolute coords
+  CGPoint oldPoint = CGPointMake(view.bounds.size.width * oldAnchorPoint.x,
+                                 view.bounds.size.height * oldAnchorPoint.y);
+  CGPoint newPoint = CGPointMake(view.bounds.size.width * newAnchorPoint.x,
+                                 view.bounds.size.height * newAnchorPoint.y);
+  
+  // Calculate the transformed anchorPoints, so the vector between them
+  // represents the displacement as seen from the superview
+  oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
+  newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
+  
+  // Calculate the delta between the anchorPoints
+  CGPoint const delta = CGPointMake(newPoint.x-oldPoint.x, newPoint.y-oldPoint.y);
+  
+  // get the x & y constraints constants which were contributing to the current
+  // view's position, and whose constant param we will tweak to adjust its position
+  CGFloat const oldXConstraintConstant = xConstraint.constant;
+  CGFloat const oldYConstraintConstant = yConstraint.constant;
+  
+  // calculate new values for the x & y constraints, from the delta in anchorPoint
+  // when autolayout recalculates the layout from the modified constraints,
+  // it will set a new view.center that compensates for the affect of the anchorPoint
+  CGFloat const newXConstraintConstant = oldXConstraintConstant + delta.x;
+  CGFloat const newYConstraintConstant = oldYConstraintConstant + delta.y;
+  
+  NSLog(@"delta applied=%@",NSStringFromCGPoint(delta));
+  view.layer.anchorPoint = newAnchorPoint;
+  xConstraint.constant = newXConstraintConstant;
+  yConstraint.constant = newYConstraintConstant;
+  [view setNeedsLayout];
 }
 
 void AddBorderToLayerOfView(UIView * view) {
