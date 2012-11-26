@@ -10,6 +10,23 @@
 
 #import "LayoutUtils.h"
 
+
+CGPoint GetAnchorPointInViewCoords(UIView *view)
+{
+  return CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x,
+                     view.bounds.size.height * view.layer.anchorPoint.y);
+}
+
+CGPoint GetAnchorPointInSuperViewCoords(UIView *view)
+{
+  CALayer * layer = view.layer;
+  CGPoint anchorPointInOwnCoords = CGPointMake(layer.anchorPoint.x * layer.bounds.size.width,
+                                               layer.anchorPoint.y * layer.bounds.size.height);
+  CGPoint anchorPointInParentCoords = [view convertPoint:anchorPointInOwnCoords
+                                                  toView:view.superview];
+  return anchorPointInParentCoords;
+}
+
 /**
   Sets the anchorPoint of view, without moving it.
  
@@ -46,6 +63,23 @@ void AddBorderToLayerOfView(UIView * view) {
   CALayer * layer = view.layer;
   layer.borderColor = [[UIColor blueColor] CGColor];
   layer.borderWidth = 2.0f;
+}
+
+/**
+  Adds a sublayer to view, drawing rect.
+ */
+CALayer * AddRectLayerToView(UIView * view, CGRect rect)
+{
+  UIColor * const color = [UIColor greenColor];
+
+  CALayer * rectLayer = [[CALayer alloc] init];
+//  rectLayer.backgroundColor = [[UIColor yellowColor] CGColor];
+  rectLayer.frame = rect;
+  rectLayer.borderWidth=1.0f;
+  rectLayer.borderColor = [color CGColor];
+  [view.layer addSublayer:rectLayer];
+  [view.layer setNeedsDisplayInRect:rect];
+  return rectLayer;
 }
 
 /**
@@ -94,12 +128,3 @@ CALayer * AddCrosshairsSublayerToAnchorPointOfView(UIView * view) {
   return AddCrossHairsSublayerToView(view, anchorPointInViewCoords);
 }
 
-CGPoint AnchorPointInSuperViewCoords(UIView *view)
-{
-  CALayer * layer = view.layer;
-  CGPoint anchorPointInOwnCoords = CGPointMake(layer.anchorPoint.x * layer.bounds.size.width,
-                                               layer.anchorPoint.y * layer.bounds.size.height);
-  CGPoint anchorPointInParentCoords = [view convertPoint:anchorPointInOwnCoords
-                                                  toView:view.superview];
-  return anchorPointInParentCoords;
-}

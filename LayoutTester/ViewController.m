@@ -12,15 +12,6 @@
 #import "LayoutUtils.h"
 #import "InstrumentedView.h"
 
-// turning this on or off changes the position of the box
-// why? old techniques for moving the anchorPoint without
-// moving the view are no longer working, b/c autolayout
-// does not seem to apply its constraints to the
-// actual frame but to what the frame would be if the
-// anchorPoint were in the center.
-
-#define USING_AUTOLAYOUT
-
 #ifdef DEBUG
 @interface UIView (debug)
 - (NSString *)recursiveDescription;
@@ -28,7 +19,8 @@
 #endif
 
 @interface ViewController ()
-
+@property (weak,nonatomic) UIView * overlayView;
+@property (weak,nonatomic) UIView * greyboxView;
 @end
 
 
@@ -89,14 +81,27 @@ CGPoint CGPointGetCenter(CGRect rect) {
 {
   [super viewDidLoad];
   UIView * rootView = self.view;
+  
+  //
+  // make global overlay view
+  //
+  
+  UIView * theOverlayView =[[UIView alloc] initWithFrame:rootView.bounds];
+  [self.view addSubview:theOverlayView];
+  self.overlayView = theOverlayView;
+  theOverlayView.backgroundColor = nil;
+  theOverlayView.opaque = NO;
+  theOverlayView.autoresizingMask = UIViewAutoresizingNone;
+  theOverlayView.translatesAutoresizingMaskIntoConstraints = YES;
+  
+  // add our text view, a grey box
+  
   InstrumentedView * greybox = [[InstrumentedView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
+  [rootView insertSubview:greybox belowSubview:theOverlayView];
+  self.greyboxView = greybox;
   greybox.backgroundColor = [UIColor lightGrayColor];
-
   // stop autolayout from translating the default (all fixed) autoresizingmask into constraints
   greybox.autoresizingMask = UIViewAutoresizingNone;
- 
-  [rootView addSubview:greybox];
-
 #ifdef USING_AUTOLAYOUT
   greybox.translatesAutoresizingMaskIntoConstraints = NO;
   [rootView addConstraints:
@@ -110,28 +115,37 @@ CGPoint CGPointGetCenter(CGRect rect) {
                                            metrics:nil
                                              views:NSDictionaryOfVariableBindings(greybox)]];
 #endif
+  CGFloat fortyfivedegreesright = (M_PI * 2.0f) - (M_PI * 2.0f) / 8.f;
+  NSLog(@"fortyfivedegreesright=%f",fortyfivedegreesright);
+  greybox.transform = CGAffineTransformMakeRotation( 0.3 );
   
   LogLayoutPropertiesOfUIView(rootView, @"rootView");
   LogLayoutPropertiesOfUIView(greybox, @"greybox");
   
+  SetViewAnchorPointMotionlessly(greybox, CGPointMake(1.0, 0.5));
+  
   // enable instrumentation
   [greybox showBorder];
-//  greybox.layer.anchorPoint = CGPointMake(1.0, greybox.layer.anchorPoint.y);
-  SetViewAnchorPointMotionlessly(greybox, CGPointMake(1.0, 0.5));
 
-//  [greybox addCrossHairsToAnchorPoint];
+  //  [greybox addCrossHairsToAnchorPoint];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
   UIView * rootView = self.view;
-  UIView * greybox = [[self.view subviews] lastObject];
+  UIView * greybox = self.greyboxView;
 
 //  LogLayoutPropertiesOfUIView(rootView, @"rootView");
 //  LogLayoutPropertiesOfUIView(greybox, @"greybox");
 
 //  AddCrossHairsSublayerToView(rootView, AnchorPointInSuperViewCoords(greybox));
   AddCrossHairsSublayerToView(rootView, greybox.center);
+
+  // stroke the frame
+  AddRectLayerToView(self.overlayView,
+                     [self.overlayView convertRect:greybox.frame fromView:greybox.superview]);
+
+ 
   LogLayoutPropertiesOfUIView(greybox, @"greybox");
   LogPoint(CGPointGetCenter(greybox.frame), @"greybox.frame calculated center");
   LogPoint(greybox.center, @"greybox.center");

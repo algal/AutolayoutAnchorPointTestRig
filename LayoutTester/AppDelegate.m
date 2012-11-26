@@ -13,7 +13,12 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    return YES;
+#ifdef USING_AUTOLAYOUT
+  NSLog(@"USING_AUTOLAYOUT=YES");
+#else
+  NSLog(@"USING_AUTOLAYOUT=NO");
+#endif
+  return YES;
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

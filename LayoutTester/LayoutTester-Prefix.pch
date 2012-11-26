@@ -12,3 +12,13 @@
   #import <UIKit/UIKit.h>
   #import <Foundation/Foundation.h>
 #endif
+
+// turning this on or off changes the perceived position of the box
+// why? old techniques for moving the anchorPoint without
+// moving the view are no longer working, b/c autolayout
+// does not seem to apply its constraints to the
+// actual frame but to what the frame would be if the
+// anchorPoint were in the center.
+
+#define USING_AUTOLAYOUT
+

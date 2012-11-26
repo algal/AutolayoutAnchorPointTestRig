@@ -45,4 +45,8 @@
 {
   return AddCrossHairsSublayerToView(self, point);
 }
+
+#ifdef USING_AUTOLAYOUT
++(BOOL)requiresConstraintBasedLayout { return YES; }
+#endif
 @end
