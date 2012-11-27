@@ -24,14 +24,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5E06D249164BADB600BD808B /* LayoutTester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LayoutTester.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E06D249164BADB600BD808B /* AutolayoutAnchorPointTestRig.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutolayoutAnchorPointTestRig.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E06D24D164BADB600BD808B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5E06D24F164BADB600BD808B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5E06D251164BADB600BD808B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		5E06D255164BADB600BD808B /* LayoutTester-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LayoutTester-Info.plist"; sourceTree = "<group>"; };
+		5E06D255164BADB600BD808B /* AutolayoutAnchorPointTestRig-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AutolayoutAnchorPointTestRig-Info.plist"; sourceTree = "<group>"; };
 		5E06D257164BADB600BD808B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5E06D259164BADB600BD808B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5E06D25B164BADB600BD808B /* LayoutTester-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LayoutTester-Prefix.pch"; sourceTree = "<group>"; };
+		5E06D25B164BADB600BD808B /* AutolayoutAnchorPointTestRig-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AutolayoutAnchorPointTestRig-Prefix.pch"; sourceTree = "<group>"; };
 		5E06D25C164BADB600BD808B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5E06D25D164BADB600BD808B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		5E06D25F164BADB600BD808B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 		5E06D24A164BADB600BD808B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5E06D249164BADB600BD808B /* LayoutTester.app */,
+				5E06D249164BADB600BD808B /* AutolayoutAnchorPointTestRig.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,10 +110,10 @@
 		5E06D254164BADB600BD808B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5E06D255164BADB600BD808B /* LayoutTester-Info.plist */,
+				5E06D255164BADB600BD808B /* AutolayoutAnchorPointTestRig-Info.plist */,
 				5E06D256164BADB600BD808B /* InfoPlist.strings */,
 				5E06D259164BADB600BD808B /* main.m */,
-				5E06D25B164BADB600BD808B /* LayoutTester-Prefix.pch */,
+				5E06D25B164BADB600BD808B /* AutolayoutAnchorPointTestRig-Prefix.pch */,
 				5E06D25F164BADB600BD808B /* Default.png */,
 				5E06D261164BADB600BD808B /* Default@2x.png */,
 				5E06D263164BADB600BD808B /* Default-568h@2x.png */,
@@ -124,9 +124,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5E06D248164BADB600BD808B /* LayoutTester */ = {
+		5E06D248164BADB600BD808B /* AutolayoutAnchorPointTestRig */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5E06D26D164BADB600BD808B /* Build configuration list for PBXNativeTarget "LayoutTester" */;
+			buildConfigurationList = 5E06D26D164BADB600BD808B /* Build configuration list for PBXNativeTarget "AutolayoutAnchorPointTestRig" */;
 			buildPhases = (
 				5E06D245164BADB600BD808B /* Sources */,
 				5E06D246164BADB600BD808B /* Frameworks */,
@@ -136,9 +136,9 @@
 			);
 			dependencies = (
 			);
-			name = LayoutTester;
+			name = AutolayoutAnchorPointTestRig;
 			productName = LayoutTester;
-			productReference = 5E06D249164BADB600BD808B /* LayoutTester.app */;
+			productReference = 5E06D249164BADB600BD808B /* AutolayoutAnchorPointTestRig.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -150,7 +150,7 @@
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Foxtrot Studios";
 			};
-			buildConfigurationList = 5E06D243164BADB600BD808B /* Build configuration list for PBXProject "LayoutTester" */;
+			buildConfigurationList = 5E06D243164BADB600BD808B /* Build configuration list for PBXProject "AutolayoutAnchorPointTestRig" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -162,7 +162,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5E06D248164BADB600BD808B /* LayoutTester */,
+				5E06D248164BADB600BD808B /* AutolayoutAnchorPointTestRig */,
 			);
 		};
 /* End PBXProject section */
@@ -273,9 +273,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LayoutTester/LayoutTester-Prefix.pch";
-				INFOPLIST_FILE = "LayoutTester/LayoutTester-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "LayoutTester/AutolayoutAnchorPointTestRig-Prefix.pch";
+				INFOPLIST_FILE = "LayoutTester/AutolayoutAnchorPointTestRig-Info.plist";
+				PRODUCT_NAME = AutolayoutAnchorPointTestRig;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -284,9 +284,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LayoutTester/LayoutTester-Prefix.pch";
-				INFOPLIST_FILE = "LayoutTester/LayoutTester-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "LayoutTester/AutolayoutAnchorPointTestRig-Prefix.pch";
+				INFOPLIST_FILE = "LayoutTester/AutolayoutAnchorPointTestRig-Info.plist";
+				PRODUCT_NAME = AutolayoutAnchorPointTestRig;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -294,7 +294,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5E06D243164BADB600BD808B /* Build configuration list for PBXProject "LayoutTester" */ = {
+		5E06D243164BADB600BD808B /* Build configuration list for PBXProject "AutolayoutAnchorPointTestRig" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5E06D26B164BADB600BD808B /* Debug */,
@@ -303,7 +303,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5E06D26D164BADB600BD808B /* Build configuration list for PBXNativeTarget "LayoutTester" */ = {
+		5E06D26D164BADB600BD808B /* Build configuration list for PBXNativeTarget "AutolayoutAnchorPointTestRig" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5E06D26E164BADB600BD808B /* Debug */,
