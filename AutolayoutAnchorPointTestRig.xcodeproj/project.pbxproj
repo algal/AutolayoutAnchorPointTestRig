@@ -21,6 +21,7 @@
 		5E06D272164BBD6900BD808B /* InstrumentedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E06D271164BBD6900BD808B /* InstrumentedView.m */; };
 		5E06D279164BC8ED00BD808B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E06D278164BC8ED00BD808B /* QuartzCore.framework */; };
 		5E657DDC164D992800998F89 /* LayoutUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E657DDB164D992800998F89 /* LayoutUtils.m */; };
+		5E773BB41664E49500EB845D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5E773BB31664E49500EB845D /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		5E06D278164BC8ED00BD808B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5E657DDA164D992800998F89 /* LayoutUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutUtils.h; sourceTree = "<group>"; };
 		5E657DDB164D992800998F89 /* LayoutUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LayoutUtils.m; sourceTree = "<group>"; };
+		5E773BB31664E49500EB845D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 		5E06D23E164BADB600BD808B = {
 			isa = PBXGroup;
 			children = (
+				5E773BB31664E49500EB845D /* README.md */,
 				5E06D253164BADB600BD808B /* LayoutTester */,
 				5E06D24C164BADB600BD808B /* Frameworks */,
 				5E06D24A164BADB600BD808B /* Products */,
@@ -177,6 +180,7 @@
 				5E06D262164BADB600BD808B /* Default@2x.png in Resources */,
 				5E06D264164BADB600BD808B /* Default-568h@2x.png in Resources */,
 				5E06D267164BADB600BD808B /* MainStoryboard.storyboard in Resources */,
+				5E773BB41664E49500EB845D /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
