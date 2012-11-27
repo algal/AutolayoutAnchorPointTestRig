@@ -65,7 +65,6 @@
 		5E06D23E164BADB600BD808B = {
 			isa = PBXGroup;
 			children = (
-				5E06D278164BC8ED00BD808B /* QuartzCore.framework */,
 				5E06D253164BADB600BD808B /* LayoutTester */,
 				5E06D24C164BADB600BD808B /* Frameworks */,
 				5E06D24A164BADB600BD808B /* Products */,
@@ -83,6 +82,7 @@
 		5E06D24C164BADB600BD808B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E06D278164BC8ED00BD808B /* QuartzCore.framework */,
 				5E06D24D164BADB600BD808B /* UIKit.framework */,
 				5E06D24F164BADB600BD808B /* Foundation.framework */,
 				5E06D251164BADB600BD808B /* CoreGraphics.framework */,
