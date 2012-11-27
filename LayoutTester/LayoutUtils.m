@@ -185,10 +185,8 @@ void AddBorderToLayerOfView(UIView * view) {
 /**
   Adds a sublayer to view, drawing rect.
  */
-CALayer * AddRectToView(UIView * view, CGRect rect)
+CALayer * AddRectToView(UIView * view, CGRect rect, UIColor * color)
 {
-  UIColor * const color = [UIColor greenColor];
-
   CALayer * rectLayer = [[CALayer alloc] init];
 //  rectLayer.backgroundColor = [[UIColor yellowColor] CGColor];
   rectLayer.frame = rect;

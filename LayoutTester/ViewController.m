@@ -20,26 +20,25 @@
 
 #define M_TAU (M_PI * 2.0f)
 
-static BOOL const USE_UNADJUSTED_ANCHORPOINT = YES;
-static BOOL const USE_CENTER_CONSTRAINT = YES;
-
+static BOOL const USE_ADJUSTED_ANCHORPOINT = YES;
+static BOOL const USE_CENTER_CONSTRAINT_NOT_EDGES = NO;
 
 @interface ViewController ()
 @property (weak,nonatomic) UIView * overlayView;
 @property (weak,nonatomic) UIView * greyboxView;
 @end
 
-
-
 @implementation ViewController
 
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  NSLog(@"USE_ADJUSTED_ANCHORPOINT=%@",NSStringFromBOOL(USE_ADJUSTED_ANCHORPOINT));
+  NSLog(@"USE_CENTER_CONSTRAINT_NOT_EDGES=%@",NSStringFromBOOL(USE_CENTER_CONSTRAINT_NOT_EDGES));
   UIView * rootView = self.view;
   
   //
-  // make global overlay view
+  // make global overlay view, for drawing annotations
   //
   
   UIView * theOverlayView =[[UIView alloc] initWithFrame:rootView.bounds];
@@ -50,7 +49,9 @@ static BOOL const USE_CENTER_CONSTRAINT = YES;
   self.overlayView.autoresizingMask = UIViewAutoresizingNone;
   self.overlayView.translatesAutoresizingMaskIntoConstraints = YES;
   
-  // add our text view, a grey box
+  //
+  // add a square grey box
+  //
   
   InstrumentedView * greybox = [[InstrumentedView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
   [rootView insertSubview:greybox belowSubview:theOverlayView];
@@ -61,7 +62,7 @@ static BOOL const USE_CENTER_CONSTRAINT = YES;
   greybox.translatesAutoresizingMaskIntoConstraints = NO;
   NSLayoutConstraint * xConstraint;
   NSLayoutConstraint * yConstraint;
-  if (USE_CENTER_CONSTRAINT) {
+  if (USE_CENTER_CONSTRAINT_NOT_EDGES) {
     xConstraint = [NSLayoutConstraint constraintWithItem:greybox
                                                attribute:NSLayoutAttributeCenterX
                                                relatedBy:NSLayoutRelationEqual
@@ -107,13 +108,18 @@ static BOOL const USE_CENTER_CONSTRAINT = YES;
   [rootView addConstraints:@[xConstraint,yConstraint,boxWidth,boxHeight]];
 #endif
   
-  // have not handled transforms correctly yet
-  //  greybox.transform = CGAffineTransformMakeRotation( 0.3 );
-  greybox.transform = CGAffineTransformRotate(greybox.transform, M_TAU / 40.0);
+
+  // apply transforms to the view
+  greybox.transform = CGAffineTransformIdentity;
+/*
+ greybox.transform = CGAffineTransformRotate(greybox.transform, M_TAU / 40.0);
   greybox.transform = CGAffineTransformScale(greybox.transform, 1.5, 1.0);
-  CGPoint newAnchorPoint  = CGPointMake(0.0, 0.5);
+  greybox.transform = CGAffineTransformTranslate(greybox.transform, 20.f, 0.0f);
+*/
   
-  if (USE_UNADJUSTED_ANCHORPOINT) {
+  // set the anchorPoint
+  CGPoint newAnchorPoint  = CGPointMake(0.0, 0.5);
+  if (!USE_ADJUSTED_ANCHORPOINT) {
     greybox.layer.anchorPoint = newAnchorPoint;
   }
   else {
@@ -134,7 +140,7 @@ static BOOL const USE_CENTER_CONSTRAINT = YES;
   InstrumentedView * greybox = (InstrumentedView*) self.greyboxView;
   
   // enable instrumentation
-  //  [greybox strokeBounds];
+  [greybox strokeBounds];
   
   //  [greybox addCrossHairsToAnchorPoint];
   //  LogLayoutPropertiesOfUIView(rootView, @"rootView");
@@ -150,12 +156,13 @@ static BOOL const USE_CENTER_CONSTRAINT = YES;
   
   // stroke the frame
   AddRectToView(self.overlayView,
-                     [self.overlayView convertRect:greybox.frame fromView:greybox.superview]);
-  
+                [self.overlayView convertRect:greybox.frame fromView:greybox.superview],
+                [UIColor greenColor]);
+
   
   LogLayoutPropertiesOfUIView(greybox, @"greybox");
-  LogPoint(CGPointGetCenter(greybox.frame), @"center of greybox.frame");
   LogPoint(greybox.center, @"greybox.center");
+  LogPoint(CGPointGetCenter(greybox.frame), @"computed center of greybox.frame");
   NSLog(@"greybox.bounds=%@",NSStringFromCGRect(greybox.bounds));
   NSLog(@"greybox.frame=%@",NSStringFromCGRect(greybox.frame));
   NSLog(@"[greybox alignmentRectForFrame:greybox.frame]=%@",NSStringFromCGRect([greybox alignmentRectForFrame:greybox.frame]));

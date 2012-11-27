@@ -28,7 +28,7 @@ void SetViewAnchorPointMotionlesslyUpdatingConstraints(UIView * view,CGPoint anc
 
 
 void AddBorderToLayerOfView(UIView * view);
-CALayer * AddRectToView(UIView * view, CGRect rect);
+CALayer * AddRectToView(UIView * view, CGRect rect,UIColor * color);
 
 /**
  @param point bullseye of crosshairs, in view's coordinates
