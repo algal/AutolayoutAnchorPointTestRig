@@ -79,6 +79,13 @@ CGPoint GetAnchorPointInSuperViewCoords(UIView *view)
   return anchorPointInParentCoords;
 }
 
+void SetViewAnchorPointMotionlesslyIgnoringTransform(UIView * view, CGPoint anchorPoint )
+{
+  CGRect oldFrame = view.frame;
+  view.layer.anchorPoint = anchorPoint;
+  view.frame = oldFrame;
+}
+
 /**
   Sets the anchorPoint of view, without moving it.
  

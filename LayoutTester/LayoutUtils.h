@@ -20,8 +20,12 @@ CGPoint CGPointGetCenter(CGRect rect);
 CGPoint GetAnchorPointInViewCoords(UIView *view);
 CGPoint GetAnchorPointInSuperViewCoords(UIView *view);
 
+// Sets anchorPoint, restore frame
+void SetViewAnchorPointMotionlesslyIgnoringTransform(UIView * view, CGPoint anchorPoint );
+// Sets anchorPoint, restore frame, compensating for transform
 void SetViewAnchorPointMotionlessly(UIView * view, CGPoint anchorPoint);
 
+// Sets anchorPoint, restoring frame by tweaking layouts (ignores transforms)
 void SetViewAnchorPointMotionlesslyUpdatingConstraints(UIView * view,CGPoint anchorPoint,
                                                        NSLayoutConstraint * xConstraint,
                                                        NSLayoutConstraint * yConstraint);

@@ -111,11 +111,11 @@ static BOOL const USE_CENTER_CONSTRAINT_NOT_EDGES = NO;
 
   // apply transforms to the view
   greybox.transform = CGAffineTransformIdentity;
-/*
+
  greybox.transform = CGAffineTransformRotate(greybox.transform, M_TAU / 40.0);
   greybox.transform = CGAffineTransformScale(greybox.transform, 1.5, 1.0);
   greybox.transform = CGAffineTransformTranslate(greybox.transform, 20.f, 0.0f);
-*/
+
   
   // set the anchorPoint
   CGPoint newAnchorPoint  = CGPointMake(0.0, 0.5);

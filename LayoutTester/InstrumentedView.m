@@ -32,7 +32,11 @@
   return AddCrosshairsSublayerToAnchorPointOfView(self);
 }
 
++(BOOL)requiresConstraintBasedLayout {
 #ifdef USING_AUTOLAYOUT
-+(BOOL)requiresConstraintBasedLayout { return YES; }
+  return YES;
+#else
+  return [super requiresConstraintBasedLayout];
 #endif
+}
 @end
