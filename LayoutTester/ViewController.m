@@ -24,56 +24,6 @@
 @end
 
 
-NSString * NSStringFromBOOL(BOOL flag) {
-  return (flag ? @"YES" : @"NO");
-}
-
-NSString * NSStringFromUIViewAutoResizing(UIViewAutoresizing autoResizingMask) {
-  NSArray * const indexOfBitToResizingValue =@[@"UIViewAutoresizingFlexibleLeftMargin",
-  @"UIViewAutoresizingFlexibleWidth",
-  @"UIViewAutoresizingFlexibleRightMargin",
-  @"UIViewAutoresizingFlexibleTopMargin",
-  @"UIViewAutoresizingFlexibleHeight",
-  @"UIViewAutoresizingFlexibleBottomMargin"];
-
-  NSString * result = @"";
-  if (autoResizingMask == 0) {
-    result = @"[no-mask]";
-  }
-  else
-  {
-    result = @"[";
-    for (int indexOfBit = 0; indexOfBit < [indexOfBitToResizingValue count]; ++indexOfBit) {
-      int mask = 1 << indexOfBit;
-      int masked_autoResizingMask = autoResizingMask & mask;
-      int thebit = masked_autoResizingMask >> indexOfBit;
-      
-      if (thebit==1) {
-        result = [result stringByAppendingString:indexOfBitToResizingValue[indexOfBit]];
-        result = [result stringByAppendingString:@","];
-      }
-    }
-    result = [result stringByAppendingString:@"]"];
-  }
-  return result;
-}
-
-void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName) {
-  NSLog(@"%@=%@",viewName,view);
-  NSLog(@"%@.translatesAutoresizingMaskIntoConstraints=%@",viewName,NSStringFromBOOL(view.translatesAutoresizingMaskIntoConstraints));
-  NSLog(@"%@.autoresizingMask=%@",viewName,NSStringFromUIViewAutoResizing(view.autoresizingMask));
-  NSLog(@"%@.constraints=%@",viewName,view.constraints);
-  NSLog(@"%@.hasAmbiguousLayout=%@",viewName,NSStringFromBOOL(view.hasAmbiguousLayout));
-  NSLog(@"%@.alignmentRectInsets=%@",viewName,NSStringFromUIEdgeInsets(view.alignmentRectInsets));
-}
-
-void LogPoint(CGPoint point, NSString * pointName) {
-  NSLog(@"%@=%@",pointName,NSStringFromCGPoint(point));
-}
-
-CGPoint CGPointGetCenter(CGRect rect) {
-  return CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
-}
 
 @implementation ViewController
 
@@ -89,10 +39,10 @@ CGPoint CGPointGetCenter(CGRect rect) {
   UIView * theOverlayView =[[UIView alloc] initWithFrame:rootView.bounds];
   [self.view addSubview:theOverlayView];
   self.overlayView = theOverlayView;
-  theOverlayView.backgroundColor = nil;
-  theOverlayView.opaque = NO;
-  theOverlayView.autoresizingMask = UIViewAutoresizingNone;
-  theOverlayView.translatesAutoresizingMaskIntoConstraints = YES;
+  self.overlayView.backgroundColor = nil;
+  self.overlayView.opaque = NO;
+  self.overlayView.autoresizingMask = UIViewAutoresizingNone;
+  self.overlayView.translatesAutoresizingMaskIntoConstraints = YES;
   
   // add our text view, a grey box
   
@@ -100,20 +50,36 @@ CGPoint CGPointGetCenter(CGRect rect) {
   [rootView insertSubview:greybox belowSubview:theOverlayView];
   self.greyboxView = greybox;
   greybox.backgroundColor = [UIColor lightGrayColor];
-  // stop autolayout from translating the default (all fixed) autoresizingmask into constraints
   greybox.autoresizingMask = UIViewAutoresizingNone;
 #ifdef USING_AUTOLAYOUT
   greybox.translatesAutoresizingMaskIntoConstraints = NO;
-  NSArray * xConstraints =[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-100-[greybox(100)]"
-                                                                           options:0
-                                                                           metrics:nil
-                                                                             views:NSDictionaryOfVariableBindings(greybox)];
-  NSArray * yConstraints =[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-100-[greybox(100)]"
-                                                                  options:0
-                                                                  metrics:nil
-                                                                    views:NSDictionaryOfVariableBindings(greybox)];
-  [rootView addConstraints:xConstraints];
-  [rootView addConstraints:yConstraints];
+  NSLayoutConstraint * xConstraint = [NSLayoutConstraint constraintWithItem:greybox
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:greybox.superview
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1.0 constant:100.0];
+  NSLayoutConstraint * yConstraint = [NSLayoutConstraint constraintWithItem:greybox
+                                                                  attribute:NSLayoutAttributeTop
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:greybox.superview
+                                                                  attribute:NSLayoutAttributeTop
+                                                                 multiplier:1.0 constant:100.0];
+
+  NSLayoutConstraint * boxWidth = [NSLayoutConstraint constraintWithItem:greybox attribute:NSLayoutAttributeWidth
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:nil
+                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                              multiplier:0 constant:100.0];
+  
+  NSLayoutConstraint * boxHeight = [NSLayoutConstraint constraintWithItem:greybox
+                                                                attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:0 constant:100.0];
+  
+  [rootView addConstraints:@[xConstraint,yConstraint,boxWidth,boxHeight]];
 #endif
   
   LogLayoutPropertiesOfUIView(rootView, @"rootView");
@@ -123,37 +89,43 @@ CGPoint CGPointGetCenter(CGRect rect) {
   //  greybox.transform = CGAffineTransformMakeRotation( 0.3 );
 //  greybox.transform = CGAffineTransformMakeScale(1.5, 1.0);
 
+  CGPoint newAnchorPoint  = CGPointMake(1.0, 0.5);
 #ifdef USING_AUTOLAYOUT
-  SetViewAnchorPointMotionlesslyUpdatingConstraints(greybox, CGPointMake(1.0, 0.5),
-                                                    xConstraints[0],yConstraints[0]);
+  SetViewAnchorPointMotionlesslyUpdatingConstraints(greybox, newAnchorPoint,
+                                                    xConstraint,yConstraint);
 #else
-  SetViewAnchorPointMotionlessly(greybox, CGPointMake(1.0, 0.5));
+  SetViewAnchorPointMotionlessly(greybox, newAnchorPoint);
 #endif
 
-  // enable instrumentation
-  [greybox showBorder];
-
-  //  [greybox addCrossHairsToAnchorPoint];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
   UIView * rootView = self.view;
-  UIView * greybox = self.greyboxView;
+  InstrumentedView * greybox = (InstrumentedView*) self.greyboxView;
 
+  // enable instrumentation
+  //  [greybox strokeBounds];
+  
+  //  [greybox addCrossHairsToAnchorPoint];
 //  LogLayoutPropertiesOfUIView(rootView, @"rootView");
 //  LogLayoutPropertiesOfUIView(greybox, @"greybox");
 
-//  AddCrossHairsSublayerToView(rootView, AnchorPointInSuperViewCoords(greybox));
-  AddCrossHairsSublayerToView(rootView, greybox.center);
-
+  // cross hairs on view.center
+  AddCrossHairsToView(self.overlayView, [self.overlayView convertPoint:greybox.center
+                                                              fromView:greybox.superview]);
+  
+  // cross hairs on computed view.center
+  AddCrossHairsToView(self.overlayView, [self.overlayView convertPoint:CGPointGetCenter(greybox.frame)
+                                                              fromView:greybox.superview]);
+  
   // stroke the frame
   AddRectLayerToView(self.overlayView,
                      [self.overlayView convertRect:greybox.frame fromView:greybox.superview]);
 
  
   LogLayoutPropertiesOfUIView(greybox, @"greybox");
-  LogPoint(CGPointGetCenter(greybox.frame), @"greybox.frame calculated center");
+  LogPoint(CGPointGetCenter(greybox.frame), @"center of greybox.frame");
   LogPoint(greybox.center, @"greybox.center");
 }
 @end

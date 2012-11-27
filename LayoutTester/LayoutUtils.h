@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+NSString * NSStringFromBOOL(BOOL flag);
+NSString * NSStringFromUIViewAutoResizing(UIViewAutoresizing autoResizingMask);
+void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName);
+void LogPoint(CGPoint point, NSString * pointName);
+
+CGPoint CGPointGetCenter(CGRect rect);
+
+///
+
 CGPoint GetAnchorPointInViewCoords(UIView *view);
 CGPoint GetAnchorPointInSuperViewCoords(UIView *view);
 
@@ -25,6 +34,6 @@ CALayer * AddRectLayerToView(UIView * view, CGRect rect);
  @param point bullseye of crosshairs, in view's coordinates
  @return the sublayer with the crosshairs image
  */
-CALayer * AddCrossHairsSublayerToView(UIView * view, CGPoint point);
+CALayer * AddCrossHairsToView(UIView * view, CGPoint point);
 CALayer * AddCrosshairsSublayerToAnchorPointOfView(UIView * view);
 

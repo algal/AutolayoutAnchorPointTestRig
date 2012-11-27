@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface InstrumentedView : UIView
--(void)showBorder;
+-(void)strokeBounds;
 -(CALayer*)addCrossHairsToAnchorPoint;
--(CALayer*)addCrossHairs:(CGPoint)point;
 @end

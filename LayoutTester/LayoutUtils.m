@@ -11,6 +11,58 @@
 #import "LayoutUtils.h"
 
 
+NSString * NSStringFromBOOL(BOOL flag) {
+  return (flag ? @"YES" : @"NO");
+}
+
+NSString * NSStringFromUIViewAutoResizing(UIViewAutoresizing autoResizingMask) {
+  NSArray * const indexOfBitToResizingValue =@[@"UIViewAutoresizingFlexibleLeftMargin",
+  @"UIViewAutoresizingFlexibleWidth",
+  @"UIViewAutoresizingFlexibleRightMargin",
+  @"UIViewAutoresizingFlexibleTopMargin",
+  @"UIViewAutoresizingFlexibleHeight",
+  @"UIViewAutoresizingFlexibleBottomMargin"];
+  
+  NSString * result = @"";
+  if (autoResizingMask == 0) {
+    result = @"[no-mask]";
+  }
+  else
+  {
+    result = @"[";
+    for (int indexOfBit = 0; indexOfBit < [indexOfBitToResizingValue count]; ++indexOfBit) {
+      int mask = 1 << indexOfBit;
+      int masked_autoResizingMask = autoResizingMask & mask;
+      int thebit = masked_autoResizingMask >> indexOfBit;
+      
+      if (thebit==1) {
+        result = [result stringByAppendingString:indexOfBitToResizingValue[indexOfBit]];
+        result = [result stringByAppendingString:@","];
+      }
+    }
+    result = [result stringByAppendingString:@"]"];
+  }
+  return result;
+}
+
+void LogLayoutPropertiesOfUIView(UIView *view,NSString * viewName) {
+  NSLog(@"%@=%@",viewName,view);
+  NSLog(@"%@.translatesAutoresizingMaskIntoConstraints=%@",viewName,NSStringFromBOOL(view.translatesAutoresizingMaskIntoConstraints));
+  NSLog(@"%@.autoresizingMask=%@",viewName,NSStringFromUIViewAutoResizing(view.autoresizingMask));
+  NSLog(@"%@.constraints=%@",viewName,view.constraints);
+  NSLog(@"%@.hasAmbiguousLayout=%@",viewName,NSStringFromBOOL(view.hasAmbiguousLayout));
+  NSLog(@"%@.alignmentRectInsets=%@",viewName,NSStringFromUIEdgeInsets(view.alignmentRectInsets));
+}
+
+void LogPoint(CGPoint point, NSString * pointName) {
+  NSLog(@"%@=%@",pointName,NSStringFromCGPoint(point));
+}
+
+CGPoint CGPointGetCenter(CGRect rect) {
+  return CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
+}
+
+
 CGPoint GetAnchorPointInViewCoords(UIView *view)
 {
   return CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x,
@@ -148,10 +200,12 @@ CALayer * AddRectLayerToView(UIView * view, CGRect rect)
 }
 
 /**
+ Adds a crosshairs sublayer to view at point
+ 
  @param point bullseye of crosshairs, in view's coordinates
  @return the sublayer with the crosshairs image
  */
-CALayer * AddCrossHairsSublayerToView(UIView * view, CGPoint point) {
+CALayer * AddCrossHairsToView(UIView * view, CGPoint point) {
   UIColor * const color = [UIColor redColor];
   CGFloat const crossHairDimension = 7.0f;
   
@@ -190,6 +244,6 @@ CALayer * AddCrosshairsSublayerToAnchorPointOfView(UIView * view) {
                                                  layer.anchorPoint.y * layerSize.height);
   
   CGPoint anchorPointInViewCoords = anchorPointInLayerCoords;
-  return AddCrossHairsSublayerToView(view, anchorPointInViewCoords);
+  return AddCrossHairsToView(view, anchorPointInViewCoords);
 }
 

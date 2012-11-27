@@ -31,7 +31,7 @@
 }
 */
 
--(void)showBorder
+-(void)strokeBounds
 {
   AddBorderToLayerOfView(self);
 }
@@ -39,11 +39,6 @@
 -(CALayer*)addCrossHairsToAnchorPoint
 {
   return AddCrosshairsSublayerToAnchorPointOfView(self);
-}
-
--(CALayer*)addCrossHairs:(CGPoint)point
-{
-  return AddCrossHairsSublayerToView(self, point);
 }
 
 #ifdef USING_AUTOLAYOUT

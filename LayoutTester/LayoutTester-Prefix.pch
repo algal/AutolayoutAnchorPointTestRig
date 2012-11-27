@@ -20,5 +20,5 @@
 // actual frame but to what the frame would be if the
 // anchorPoint were in the center.
 
-//#define USING_AUTOLAYOUT
+#define USING_AUTOLAYOUT
 
